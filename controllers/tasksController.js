@@ -1,35 +1,53 @@
-const tasks = require("../data/tasks");
+const taskService = require("../services/taskService");
 
 function getAllTasks(req, res) {
+
+    const tasks = taskService.getTasks();
+
     res.json(tasks);
+
 }
 
 function getTaskById(req, res) {
+
+    const tasks = taskService.getTasks();
 
     const id = Number(req.params.id);
 
     const task = tasks.find(task => task.id === id);
 
     if (!task) {
+
         return res.status(404).json({
             message: "Tâche introuvable"
         });
+
     }
 
     res.json(task);
+
 }
 
 function createTask(req, res) {
 
+    const tasks = taskService.getTasks();
+
     const newTask = {
+
         id: tasks.length + 1,
+
         title: req.body.title,
+
         done: false
+
     };
 
     tasks.push(newTask);
 
+    taskService.saveTasks(tasks);
+
     res.status(201).json(newTask);
+
 }
 
 function updateTask(req, res) {
