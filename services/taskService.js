@@ -1,27 +1,27 @@
-const fs = require("fs");
+const Task = require("../models/Task");
 
-const path = require("path");
+async function getTasks() {
 
-const filePath = path.join(__dirname, "../data/tasks.json");
-
-function getTasks() {
-
-    const data = fs.readFileSync(filePath, "utf8");
-
-    return JSON.parse(data);
+    return await Task.find();
 
 }
 
-function saveTasks(tasks) {
+async function createTask(title) {
 
-    fs.writeFileSync(
-        filePath,
-        JSON.stringify(tasks, null, 4)
-    );
+    const task = new Task({
+
+        title
+
+    });
+
+    return await task.save();
 
 }
 
 module.exports = {
+
     getTasks,
-    saveTasks
+
+    createTask
+
 };

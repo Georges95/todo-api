@@ -1,8 +1,8 @@
 const taskService = require("../services/taskService");
 
-function getAllTasks(req, res) {
+async function getAllTasks(req, res) {
 
-    const tasks = taskService.getTasks();
+    const tasks = await taskService.getTasks();
 
     res.json(tasks);
 
@@ -28,25 +28,11 @@ function getTaskById(req, res) {
 
 }
 
-function createTask(req, res) {
+async function createTask(req, res) {
 
-    const tasks = taskService.getTasks();
+    const task = await taskService.createTask(req.body.title);
 
-    const newTask = {
-
-        id: tasks.length + 1,
-
-        title: req.body.title,
-
-        done: false
-
-    };
-
-    tasks.push(newTask);
-
-    taskService.saveTasks(tasks);
-
-    res.status(201).json(newTask);
+    res.status(201).json(task);
 
 }
 
