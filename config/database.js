@@ -4,7 +4,7 @@ async function connectDatabase() {
 
     try {
 
-        await mongoose.connect("mongodb://127.0.0.1:27017/todo-api");
+        await mongoose.connect(process.env.MONGO_URI);
 
         console.log("Connexion à MongoDB réussie.");
 
