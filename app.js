@@ -6,6 +6,8 @@ const connectDatabase = require("./config/database");
 
 const tasksRoutes = require("./routes/tasks");
 
+const errorHandler = require("./middlewares/errorHandler");
+
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -13,6 +15,8 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 app.use("/tasks", tasksRoutes);
+
+app.use(errorHandler);
 
 app.get("/", (req, res) => {
 

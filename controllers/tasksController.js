@@ -28,13 +28,10 @@ function getTaskById(req, res) {
 
 }
 
-async function createTask(req, res) {
-
+const createTask = asyncHandler(async (req, res) => {
     const task = await taskService.createTask(req.body.title);
-
     res.status(201).json(task);
-
-}
+});
 
 function updateTask(req, res) {
 
