@@ -1,74 +1,85 @@
 const taskService = require("../services/taskService");
+const asyncHandler = require("../middlewares/asyncHandler");
 
-async function getAllTasks(req, res) {
+const getAllTasks = asyncHandler(async (req, res) => {
 
     const tasks = await taskService.getTasks();
 
     res.json(tasks);
 
-}
-
-function getTaskById(req, res) {
-
-    const tasks = taskService.getTasks();
-
-    const id = Number(req.params.id);
-
-    const task = tasks.find(task => task.id === id);
-
-    if (!task) {
-
-        return res.status(404).json({
-            message: "Tâche introuvable"
-        });
-
-    }
-
-    res.json(task);
-
-}
-
-const createTask = asyncHandler(async (req, res) => {
-    const task = await taskService.createTask(req.body.title);
-    res.status(201).json(task);
 });
 
-function updateTask(req, res) {
+const getTaskById = asyncHandler(async (req, res) => {
 
-    const id = Number(req.params.id);
-
-    const task = tasks.find(task => task.id === id);
+    const task = await taskService.getTaskById(req.params.id);
 
     if (!task) {
-        return res.status(404).json({
-            message: "Tâche introuvable"
-        });
-    }
 
-    task.title = req.body.title;
-    task.done = req.body.done;
+        return res.status(404).json({
+
+            message: "Tâche introuvable."
+
+        });
+
+    }
 
     res.json(task);
-}
 
-function deleteTask(req, res) {
+});
 
-    const id = Number(req.params.id);
+const createTask = asyncHandler(async (req, res) => {
 
-    const index = tasks.findIndex(task => task.id === id);
+    const task = await taskService.createTask(req.body.title);
 
-    if (index === -1) {
+    res.status(201).json(task);
+
+});
+
+const updateTask = asyncHandler(async (req, res) => {
+
+    const task = await taskService.updateTask(
+
+        req.params.id,
+
+        req.body
+
+    );
+
+    if (!task) {
+
         return res.status(404).json({
-            message: "Tâche introuvable"
+
+            message: "Tâche introuvable."
+
         });
+
     }
 
-    tasks.splice(index, 1);
+    res.json(task);
+
+});
+
+const deleteTask = asyncHandler(async (req, res) => {
+
+    const deleted = await taskService.deleteTask(req.params.id);
+
+    if (!deleted) {
+
+        return res.status(404).json({
+
+            message: "Tâche introuvable."
+
+        });
+
+    }
 
     res.json({
-        message: "Tâche supprimée"
+
+        message: "Suppression réussie."
+
     });
-}
+
+});
 
 module.exports = {
     getAllTasks,
