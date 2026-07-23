@@ -10,7 +10,13 @@ const errorHandler = require("./middlewares/errorHandler");
 
 const app = express();
 
+const authRoutes = require("./routes/auth");
+
+
+
 const PORT = process.env.PORT || 3000;
+
+app.use("/auth",authRoutes);
 
 app.use(express.json());
 
